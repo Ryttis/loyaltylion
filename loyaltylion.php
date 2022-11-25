@@ -171,7 +171,7 @@ class LoyaltyLion extends Module
 		$reward_data = Tools::getValue('ll_create_reward_async');
 
 		if (!empty($reward_data))
-			$reward_data = Tools::jsonDecode(urldecode($reward_data));
+			$reward_data = json_decode(urldecode($reward_data));
 
 		if (!$reward_data || $reward_data->type != 'discount' || !$reward_data->discount_amount || !$reward_data->codes_to_generate)
 			$this->render('582', 422);
@@ -186,7 +186,7 @@ class LoyaltyLion extends Module
 		if (isset($response->error) || !$response->body)
 			$this->render('583', 500);
 
-		$body = Tools::jsonDecode($response->body);
+		$body = json_decode($response->body);
 		$codes = $body->generated_codes;
 		$batch_id = $body->batch_id;
 
@@ -242,7 +242,7 @@ class LoyaltyLion extends Module
 		if (empty($reward_data))
 			return;
 
-		$reward_data_decoded = Tools::jsonDecode(urldecode($reward_data));
+		$reward_data_decoded = json_decode(urldecode($reward_data));
 
 		if (!$reward_data_decoded
 			|| $reward_data_decoded->type != 'discount'
@@ -369,7 +369,7 @@ class LoyaltyLion extends Module
 		$this->context->smarty->assign(array(
 			'base_uri' => $this->base_uri,
 			'loyaltylion_host' => $this->getLoyaltyLionHost(),
-			'shop_details' => urlencode(Tools::jsonEncode($shop_details)),
+			'shop_details' => urlencode(json_encode($shop_details)),
 			'currency_code' => $default_currency->iso_code,
 			'currency_sign' => $default_currency->sign,
 			'pricing' => $pricing,
@@ -1113,7 +1113,7 @@ class LoyaltyLion extends Module
 		if (!empty($body) && is_array($body))
 		{
 			header('Content-Type: application/json');
-			$body = Tools::jsonEncode($body);
+			$body = json_encode($body);
 		}
 
 		die($body);
